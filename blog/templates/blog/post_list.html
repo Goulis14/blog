@@ -7,6 +7,11 @@
                 {{post.published_date}}
             </div>
             <p>{{post.text|linebreaks}}</p>
+            <p>Written by {{ post.author }}
+                {% if post.category %}
+                on <a href="{% url 'post_list' %}?cat={{ post.category_id }} ">{{ post.category }}</a>
+                {% endif %}
+            </p>
         </div>
     {% endfor %}
 {% endblock content %}

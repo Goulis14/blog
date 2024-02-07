@@ -5,7 +5,17 @@ from .models import Post
 
 # Create your views here.
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    cat = request.GET.get('cat', '')
+    try:
+        cat = int(cat)
+    except:
+        cat = False
+
+    if cat is False:
+        posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    else:
+        posts = Post.objects.filter(category__post__published_date__lte=timezone.now()).filter(category=cat).order_by('published_date')
+
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
